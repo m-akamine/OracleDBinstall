@@ -62,7 +62,7 @@ OTNから19cのモジュール（Linux x86-64）をダウンロードする
 8. 教科書のサンプルデータを入れる
 	1. [https://www.sbcr.jp/product/4797375411/](https://www.sbcr.jp/product/4797375411/)
 	2. 上記のサイトから「サポート情報」-「【ダウンロード】『ORACLE MASTER Bronze 12c SQL基礎』スクリプトファイル」-「cretab.zip」をダウンロード
-	3. 
+	3. https://github.com/m-akamine/OracleDBinstall.git
 
 ## 簡易SQL
 * [Oracle Live SQL](https://livesql.oracle.com/)  

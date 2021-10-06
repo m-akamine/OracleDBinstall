@@ -22,7 +22,7 @@ GRANT CREATE VIEW TO ora01;
 
 PROMPT
 PROMPT "ora01" 's DATA Creating...
-CONNECT ora01/oracle
+CONNECT ora01/oracle@localhost/orclpdb1
 
 /* Create Table for 実習 */
 
