@@ -67,3 +67,11 @@ OTNから19cのモジュール（Linux x86-64）をダウンロードする
 ## 簡易SQL
 * [Oracle Live SQL](https://livesql.oracle.com/)  
 * [dokoQL](https://dokoql.com/)
+
+
+## 「oraenv」について
+
+## 毎回の手順
+
+
+## 

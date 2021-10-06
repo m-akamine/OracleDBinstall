@@ -28,14 +28,14 @@ CONNECT ora01/oracle@localhost/orclpdb1
 
 CREATE TABLE departments
        (deptno NUMBER(2) CONSTRAINT pk_dept PRIMARY KEY,
-	dname VARCHAR2(14) ,
-	loc VARCHAR2(10) ) ;
+	dname NVARCHAR2(14) ,
+	loc NVARCHAR2(10) ) ;
 
 CREATE TABLE employees
        (empno NUMBER(4) CONSTRAINT pk_emp PRIMARY KEY,
-	ename VARCHAR2(10),
-	yomi VARCHAR2(20),
-	job VARCHAR2(8),
+	ename NVARCHAR2(10),
+	yomi NVARCHAR2(20),
+	job NVARCHAR2(8),
 	mgr NUMBER(4),
 	hiredate DATE,
 	sal NUMBER(7),
@@ -93,10 +93,10 @@ INSERT INTO salgrades VALUES ('E',460001,999999);
 
 CREATE TABLE customers
 	(custno 	NUMBER(5) CONSTRAINT cust_pk PRIMARY KEY,
- 	 cname 		VARCHAR2(24),
-	 address	VARCHAR2(36),
-	 phone		VARCHAR2(12),
-	 credit_rating	VARCHAR2(9));
+ 	 cname 		NVARCHAR2(24),
+	 address	NVARCHAR2(36),
+	 phone		NVARCHAR2(12),
+	 credit_rating	NVARCHAR2(9));
 
 INSERT INTO customers VALUES (1000,'品川商事','東京都港区１−ｘ−ｘ','03-1234-xxxx','優良');
 INSERT INTO customers VALUES (1001,'横浜商店','横浜市磯子区２−ｘ−ｘ','045-753-xxxx','要注意');
@@ -112,7 +112,7 @@ INSERT INTO customers VALUES (1009,'ＤＢストア','東京都渋谷区ｘｘ�
 
 CREATE TABLE products
 	(PRODNO		CHAR(3) CONSTRAINT PROD_PK PRIMARY KEY,
-	 PNAME		VARCHAR2(30),
+	 PNAME		NVARCHAR2(30),
 	 PRICE		NUMBER(6));
 
 INSERT INTO products VALUES ('A01','100円ボールペン',100);
@@ -151,7 +151,7 @@ CREATE TABLE orders
 	 date_ordered	DATE,
 	 date_shipped	DATE,
 	 salesman_no	NUMBER(4) CONSTRAINT ord_emp_fk REFERENCES employees(empno),
-	 payment_type	VARCHAR2(15));
+	 payment_type	NVARCHAR2(15));
 
 INSERT INTO orders VALUES (1,1001,'2009-12-20','2009-12-27',1003,'クレジット');
 INSERT INTO orders VALUES (2,1001,'2009-12-21','2009-12-27',1003,'クレジット');
