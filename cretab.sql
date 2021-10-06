@@ -163,7 +163,7 @@ INSERT INTO orders VALUES (7,1007,to_date('2010-01-22','yyyy-mm-dd'),to_date('20
 INSERT INTO orders VALUES (8,1006,to_date('2010-01-22','yyyy-mm-dd'),to_date('2010-01-29','yyyy-mm-dd'),1010,'現金');
 INSERT INTO orders VALUES (9,1007,to_date('2010-01-25','yyyy-mm-dd'),to_date('2010-02-03','yyyy-mm-dd'),1006,'クレジット');
 INSERT INTO orders VALUES (10,1003,to_date('2010-02-15','yyyy-mm-dd'),to_date('2010-02-22','yyyy-mm-dd'),1003,'クレジット');
-INSERT INTO orders VALUES (11,1007,to_date('2010-02-20','yyyy-mm-dd'),to_date('2010-02-27','yyyy-mm-dd'),1006,'クレジット');
+INSERT INTO orders VALUES (11,1007,to_date('2010-02-20','yyyy-mm-dd'),to_date('2010-02-27','yyyy-mm-dd',)1006,'クレジット');
 INSERT INTO orders VALUES (12,1006,to_date('2010-03-16','yyyy-mm-dd'),null,1010,'現金');
 INSERT INTO orders VALUES (13,1009,to_date('2010-04-02','yyyy-mm-dd'),null,1006,'現金');
 
