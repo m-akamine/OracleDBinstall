@@ -139,7 +139,7 @@ $ vagrant -v
 	export LD_LIBRARY_PATH PATH NLS_LANG
 
 	# データベースのユーザーを自動ログイン
-	sqlplus sqlplus ora01/oracle@localhost/orclpdb1
+	sqlplus ora01/oracle@localhost/orclpdb1
 	```
 
 9. SQL Plusの表示形式を変更するスクリプト
