@@ -1,4 +1,4 @@
-# Oracle Database 18c 環境構築
+# Oracle Database 19c 環境構築
 Date 2021/9/23
 
 ## 環境
@@ -40,41 +40,8 @@ $ vagrant -v
 	```
 	$ cp ~/Downloads/LINUX.X64_193000_db_home.zip ~/Boxs/vagrant-boxes/OracleDatabase/19.3.0/LINUX.X64_193000_db_home.zip
 	```
-
-6. vagrantのインストールの設定を変更する
-	1. vagrantの設定ファイル「Vagrantfile」をテキストエディタで開く
-	```
-	$ vi ~/Boxs/vagrant-boxes/OracleDatabase/19.3.0/Vagrantfile
-	```
-
-	2. 「Vagrantfile」45行目のタイムゾーンを変更
-	```
-	VM_SYSTEM_TIMEZONE = default_s('VM_SYSTEM_TIMEZONE', host_tz)
-	↓	
-	VM_SYSTEM_TIMEZONE = default_s('VM_SYSTEM_TIMEZONE', 'Asia/Tokyo')」
-	```
-
-	3. インストール用のスクリプト「install.sh」を「userscripts」にコピーして、名前を「01_install.sh」に変更  
-	```
-	$ cp ~/Boxs/vagrant-boxes/OracleDatabase/19.3.0/scripts/install.sh ~/Boxs/vagrant-boxes/OracleDatabase/19.3.0/userscripts/01_install.sh
-	```
-
-	4. コピーした「01_install.sh」をテキストエディタで開く  
-	```
-	$ vi ~/Boxs/vagrant-boxes/OracleDatabase/19.3.0/Vagrantfile/userscripts/01_install.sh
-	```
-
-	5. 「01_install.sh」26,27行目の言語設定を変更  
-	```
-	echo LANG=en_US.utf-8 >> /etc/environment
-	echo LC_ALL=en_US.utf-8 >> /etc/environment
-	↓
-	echo LANG=ja_JP.utf-8 >> /etc/environment
-	echo LC_ALL=ja_JP.utf-8 >> /etc/environment
-	```
-
  
-6. インスタンスを起動 vagrant up
+5. インスタンスを起動 vagrant up
 	1. 「/vagrant-boxes/OracleDatabase/19.3.0/」内でvagrant upを実行し、初回インストールと仮想マシンの起動(数時間かかる場合もある)
 	```
 	$ pwd
@@ -92,7 +59,7 @@ $ vagrant -v
 	$ ./setPassword.sh ★新しいパスワード★
 	```
 
-7. 教科書のサンプルデータをダウンロード
+6. 教科書のサンプルデータをダウンロード
 	1. 『ORACLE MASTER Bronze 12c SQL基礎』スクリプトファイル」-「cretab.zip」をBox内にダウンロード
 	```
 	$ pwd
@@ -100,7 +67,7 @@ $ vagrant -v
 	$ git clone https://github.com/m-akamine/OracleDBinstall.git
 	```
 
-8. 仮想マシンへ接続し、OracleDBを起動しデータベースへ接続し、教科書のサンプルデータを取り込む  
+7. 仮想マシンへ接続し、OracleDBを起動しデータベースへ接続し、教科書のサンプルデータを取り込む  
 	1. 仮想マシンOracleLinuxへ接続しホームディレクトリを確認
 	```
 	$ vagrant ssh
@@ -134,24 +101,48 @@ $ vagrant -v
 	```
 	SQL> SELECT * FROM employees;
 	```
-9. OracleDBを日本語環境へ変更
-	1. OracleDBを起動しホームディレクトリを確認
+8. OracleDBを日本語環境へ変更と自動ログイン
+	1. 仮想マシンOracleLinuxへ接続しホームディレクトリを確認
+	```
+	$ vagrant ssh
+	$ pwd
+	/home/vagrant
+	```
+
+	2. 仮想マシンOracleLinuxを起動した際に、読み込まれる設定ファイル「.bash_profile」を開く
+	```
+	$ vi /home/vagrant/.bash_profile
+	```
+
+	3. 「oracle」ユーザーで自動ログイン 最後の行に追記
+	```
+	# オラクルユーザでログイン
+	sudo su - oralce
+	```
+
+	4. OracleDBを起動しホームディレクトリのを確認
 	```
 	$ sudo su - oracle
 	$ pwd
 	/home/oracle
 	```
-	2. OracleDBを起動した際に、読み込まれる設定ファイル「.bash_profile」を開く
+
+	5. OracleDBを起動した際に、読み込まれる設定ファイル「.bash_profile」を開く
 	```
 	$ vi /home/oracle/.bash_profile
 	```
 
-	3. NLS_LANGを日本語のUTF-8で指定する 最後の行に追記
+	6. NLS_LANGを日本語のUTF-8で指定する 最後の行に追記
 	```
+	# NLS_LANGを日本語のUTF-8で指定す
 	export NLS_LANG=JAPANESE_JAPAN.AL32UTF8
+	export LD_LIBRARY_PATH PATH NLS_LANG
+
+	# データベースのユーザーを自動ログイン
+	sqlplus sqlplus ora01/oracle@localhost/orclpdb1
 	```
 
-10. SQL Plusの表示形式を変更するスクリプト
+9. SQL Plusの表示形式を変更するスクリプト
 	1. SQL Plusの起動時に書き込んだコマンドを自動実行、読み込まれる設定ファイル「glogin.sql」を開く
 	```
 	$ vi $ORACLE_HOME/sqlplus/admin/glogin.sql
@@ -159,10 +150,31 @@ $ vagrant -v
 
 	2. 「1行の表示幅」「1ページの行数」「特定の列の表示幅(文字と数字)」を指定する 最後の行に追記
 	```
-	SET LINESIZE 150
-	SET PAGESIZE 20
-	COLUMN yomi FORMAT a10
-	COLUMN empno FORMAT 99999
+	DEFINE_EDITOR="code --wait"
+
+	set null (null)
+	set pagesize 30
+	set linesize 200
+	col first_name for a15
+	col last_name for a15
+	col name for a15
+	col empno for 9999
+	col ename for a15
+	col yomi for a15
+	col job for a15
+	col deptno for 999
+	col job_id for a10
+	col pname for a20
+	col department_name for a20
+	col city for a20
+	col region_name for a30
+	col country_name for a30
+	col job_title for a20
+	col email for a10
+	col region for a4
+	col dname for a20
+	col tname for a20
+	set editfile sqlplus.sql
 	```
 
 ## 毎回の手順
@@ -174,25 +186,21 @@ $ vagrant -v
 
 3. 仮想マシンへ接続
 `$ vagrant ssh`
+上記の設定がうまく行っていれば、  
+OralceLinux接続→Oracleユーザログイン→SQL Plusにora01ユーザログイン
 
-4. OracleDBを起動
-`$ sudo su - oracle`
+4. **SQLを勉強する**
 
-5. SQL PlusでOracleDBへ接続(一般ユーザ)
-`$ sqlplus ora01/oracle@localhost/orclpdb1`
-
-6. **SQLを勉強する**
-
-7. OracleDBを切断
+5. OracleDBを切断
 `SQL> exit`
 
-8. OracleDBを終了
+6. OracleDBを終了
 `$ exit`
 
-9. 仮想マシンへ接続を終了
+7. 仮想マシンへ接続を終了
 `$ exit`
 
-10. 仮想マシンを終了
+8. 仮想マシンを終了
 `$ vagrant halt`
 
 
@@ -203,13 +211,16 @@ $ vagrant -v
 | 一般 | ora01 | oracle |
 | 管理者 | system | ★仮想環境をインストールした際のパスワード★ |
 
-| 接続ユーザ | ユーザー名 | パスワード |
-| ---- | ---- | ---- |
-| 一般 | ora01 | oracle |
-| 管理者 | system | ★仮想環境をインストールした際のパスワード★ |
+| VM_ORACLE_BASE | /opt/oracle/ | Oracle base directory |
+| VM_ORACLE_HOME | /opt/oracle/product/19c/dbhome_1 | Oracle home directory |
+| VM_ORACLE_SID | ORCLCDB | Oracle SID |
+| VM_ORACLE_PDB | ORCLPDB1 | PDB name |
+| VM_ORACLE_CHARACTERSET | AL32UTF8 | database character set |
+| VM_ORACLE_EDITION | EE | Oracle Database edition. Enterprise Edition |
+| VM_LISTENER_PORT | 1521 | Listener port |
+| VM_EM_EXPRESS_PORT | 5500 | EM Express port |
 
 
 ## 簡易SQL
 * [Oracle Live SQL](https://livesql.oracle.com/)  
 * [dokoQL](https://dokoql.com/)
-
